@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 
 function App() {
-  const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+  const taxRates = {
+    Alabama: { abbreviation: "AL", FIT: 0.1, SIT: 0.05 },
+    Alaska: { abbreviation: "AK", FIT: 0.1, SIT: 0.0 },
+
+    Wyoming: { abbreviation: "WY", FIT: 0.1, SIT: 0.0 },
+  };
+  const states = Object.keys(taxRates);
   const [salary, setSalary] = useState("");
   const [state, setState] = useState(states[0]);
   const [frequency, setFrequency] = useState("Monthly");
@@ -11,8 +17,10 @@ function App() {
 
   const handleCalculate = () => {
     // Placeholder for tax calculation logic
-    const taxRate = 0.1; // Example tax rate
-    const taxes = parseFloat(salary) * taxRate;
+    const stateTaxInfo = taxRates[state];
+    const federalTaxes = parseFloat(salary) * stateTaxInfo.FIT;
+    const stateTaxes = parseFloat(salary) * stateTaxInfo.SIT;
+    const taxes = federalTaxes + stateTaxes;
     const salaryAfterTaxes = parseFloat(salary) - taxes;
     setResult(`Salary after taxes: $${salaryAfterTaxes.toFixed(2)}`);
   };
